@@ -1,4 +1,4 @@
-# FAKE Process imagepath and name
+# Fake process imagepath and name
 
 
 # BTW
