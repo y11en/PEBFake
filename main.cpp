@@ -1,56 +1,61 @@
-
-#include <string>
 #include <Windows.h>
 #include <Shlwapi.h>
-#pragma  comment(lib,"ole32.lib")
-#pragma  comment(lib,"shlwapi.lib")
-#pragma  comment(lib,"shell32.lib")
+#include <tchar.h>
+#include <string>
+
+#pragma comment(lib, "ole32.lib")
+#pragma comment(lib, "shlwapi.lib")
+#pragma comment(lib, "shell32.lib")
 #define RTL_MAX_DRIVE_LETTERS 32
-#define GDI_HANDLE_BUFFER_SIZE32  34
-#define GDI_HANDLE_BUFFER_SIZE64  60
+#define GDI_HANDLE_BUFFER_SIZE32 34
+#define GDI_HANDLE_BUFFER_SIZE64 60
 #define GDI_BATCH_BUFFER_SIZE 310
 
-#define NtCurrentProcess() ( (HANDLE)(LONG_PTR) -1 )
+#define NtCurrentProcess() ((HANDLE)(LONG_PTR)-1)
 #ifndef NT_SUCCESS
 #define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
 #endif
 
 #if !defined(_M_X64)
-#define GDI_HANDLE_BUFFER_SIZE      GDI_HANDLE_BUFFER_SIZE32
+#define GDI_HANDLE_BUFFER_SIZE GDI_HANDLE_BUFFER_SIZE32
 #else
-#define GDI_HANDLE_BUFFER_SIZE      GDI_HANDLE_BUFFER_SIZE64
+#define GDI_HANDLE_BUFFER_SIZE GDI_HANDLE_BUFFER_SIZE64
 #endif
 
 typedef ULONG GDI_HANDLE_BUFFER32[GDI_HANDLE_BUFFER_SIZE32];
 typedef ULONG GDI_HANDLE_BUFFER64[GDI_HANDLE_BUFFER_SIZE64];
 typedef ULONG GDI_HANDLE_BUFFER[GDI_HANDLE_BUFFER_SIZE];
 
-typedef struct _UNICODE_STRING {
+typedef struct _UNICODE_STRING
+{
 	USHORT Length;
 	USHORT MaximumLength;
-	PWSTR  Buffer;
+	PWSTR Buffer;
 } UNICODE_STRING;
 typedef UNICODE_STRING *PUNICODE_STRING;
 
-
-typedef struct _STRING {
+typedef struct _STRING
+{
 	USHORT Length;
 	USHORT MaximumLength;
 	PCHAR Buffer;
 } STRING;
 typedef STRING *PSTRING;
 
-typedef struct _CLIENT_ID {
+typedef struct _CLIENT_ID
+{
 	HANDLE UniqueProcess;
 	HANDLE UniqueThread;
 } CLIENT_ID, *PCLIENT_ID;
 
-typedef struct _CLIENT_ID64 {
+typedef struct _CLIENT_ID64
+{
 	ULONG64 UniqueProcess;
 	ULONG64 UniqueThread;
 } CLIENT_ID64, *PCLIENT_ID64;
 
-typedef struct _LDR_DATA_TABLE_ENTRY_COMPATIBLE {
+typedef struct _LDR_DATA_TABLE_ENTRY_COMPATIBLE
+{
 	LIST_ENTRY InLoadOrderLinks;
 	LIST_ENTRY InMemoryOrderLinks;
 	union
@@ -68,33 +73,33 @@ typedef struct _LDR_DATA_TABLE_ENTRY_COMPATIBLE {
 		ULONG Flags;
 		struct
 		{
-			ULONG PackagedBinary : 1; // Size=4 Offset=104 BitOffset=0 BitCount=1
-			ULONG MarkedForRemoval : 1; // Size=4 Offset=104 BitOffset=1 BitCount=1
-			ULONG ImageDll : 1; // Size=4 Offset=104 BitOffset=2 BitCount=1
-			ULONG LoadNotificationsSent : 1; // Size=4 Offset=104 BitOffset=3 BitCount=1
+			ULONG PackagedBinary : 1;		   // Size=4 Offset=104 BitOffset=0 BitCount=1
+			ULONG MarkedForRemoval : 1;		   // Size=4 Offset=104 BitOffset=1 BitCount=1
+			ULONG ImageDll : 1;				   // Size=4 Offset=104 BitOffset=2 BitCount=1
+			ULONG LoadNotificationsSent : 1;   // Size=4 Offset=104 BitOffset=3 BitCount=1
 			ULONG TelemetryEntryProcessed : 1; // Size=4 Offset=104 BitOffset=4 BitCount=1
-			ULONG ProcessStaticImport : 1; // Size=4 Offset=104 BitOffset=5 BitCount=1
-			ULONG InLegacyLists : 1; // Size=4 Offset=104 BitOffset=6 BitCount=1
-			ULONG InIndexes : 1; // Size=4 Offset=104 BitOffset=7 BitCount=1
-			ULONG ShimDll : 1; // Size=4 Offset=104 BitOffset=8 BitCount=1
-			ULONG InExceptionTable : 1; // Size=4 Offset=104 BitOffset=9 BitCount=1
-			ULONG ReservedFlags1 : 2; // Size=4 Offset=104 BitOffset=10 BitCount=2
-			ULONG LoadInProgress : 1; // Size=4 Offset=104 BitOffset=12 BitCount=1
-			ULONG LoadConfigProcessed : 1; // Size=4 Offset=104 BitOffset=13 BitCount=1
-			ULONG EntryProcessed : 1; // Size=4 Offset=104 BitOffset=14 BitCount=1
-			ULONG ProtectDelayLoad : 1; // Size=4 Offset=104 BitOffset=15 BitCount=1
-			ULONG ReservedFlags3 : 2; // Size=4 Offset=104 BitOffset=16 BitCount=2
-			ULONG DontCallForThreads : 1; // Size=4 Offset=104 BitOffset=18 BitCount=1
-			ULONG ProcessAttachCalled : 1; // Size=4 Offset=104 BitOffset=19 BitCount=1
-			ULONG ProcessAttachFailed : 1; // Size=4 Offset=104 BitOffset=20 BitCount=1
-			ULONG CorDeferredValidate : 1; // Size=4 Offset=104 BitOffset=21 BitCount=1
-			ULONG CorImage : 1; // Size=4 Offset=104 BitOffset=22 BitCount=1
-			ULONG DontRelocate : 1; // Size=4 Offset=104 BitOffset=23 BitCount=1
-			ULONG CorILOnly : 1; // Size=4 Offset=104 BitOffset=24 BitCount=1
-			ULONG ChpeImage : 1; // Size=4 Offset=104 BitOffset=25 BitCount=1
-			ULONG ReservedFlags5 : 2; // Size=4 Offset=104 BitOffset=26 BitCount=2
-			ULONG Redirected : 1; // Size=4 Offset=104 BitOffset=28 BitCount=1
-			ULONG ReservedFlags6 : 2; // Size=4 Offset=104 BitOffset=29 BitCount=2
+			ULONG ProcessStaticImport : 1;	   // Size=4 Offset=104 BitOffset=5 BitCount=1
+			ULONG InLegacyLists : 1;		   // Size=4 Offset=104 BitOffset=6 BitCount=1
+			ULONG InIndexes : 1;			   // Size=4 Offset=104 BitOffset=7 BitCount=1
+			ULONG ShimDll : 1;				   // Size=4 Offset=104 BitOffset=8 BitCount=1
+			ULONG InExceptionTable : 1;		   // Size=4 Offset=104 BitOffset=9 BitCount=1
+			ULONG ReservedFlags1 : 2;		   // Size=4 Offset=104 BitOffset=10 BitCount=2
+			ULONG LoadInProgress : 1;		   // Size=4 Offset=104 BitOffset=12 BitCount=1
+			ULONG LoadConfigProcessed : 1;	   // Size=4 Offset=104 BitOffset=13 BitCount=1
+			ULONG EntryProcessed : 1;		   // Size=4 Offset=104 BitOffset=14 BitCount=1
+			ULONG ProtectDelayLoad : 1;		   // Size=4 Offset=104 BitOffset=15 BitCount=1
+			ULONG ReservedFlags3 : 2;		   // Size=4 Offset=104 BitOffset=16 BitCount=2
+			ULONG DontCallForThreads : 1;	   // Size=4 Offset=104 BitOffset=18 BitCount=1
+			ULONG ProcessAttachCalled : 1;	   // Size=4 Offset=104 BitOffset=19 BitCount=1
+			ULONG ProcessAttachFailed : 1;	   // Size=4 Offset=104 BitOffset=20 BitCount=1
+			ULONG CorDeferredValidate : 1;	   // Size=4 Offset=104 BitOffset=21 BitCount=1
+			ULONG CorImage : 1;				   // Size=4 Offset=104 BitOffset=22 BitCount=1
+			ULONG DontRelocate : 1;			   // Size=4 Offset=104 BitOffset=23 BitCount=1
+			ULONG CorILOnly : 1;			   // Size=4 Offset=104 BitOffset=24 BitCount=1
+			ULONG ChpeImage : 1;			   // Size=4 Offset=104 BitOffset=25 BitCount=1
+			ULONG ReservedFlags5 : 2;		   // Size=4 Offset=104 BitOffset=26 BitCount=2
+			ULONG Redirected : 1;			   // Size=4 Offset=104 BitOffset=28 BitCount=1
+			ULONG ReservedFlags6 : 2;		   // Size=4 Offset=104 BitOffset=29 BitCount=2
 			ULONG CompatDatabaseProcessed : 1; // Size=4 Offset=104 BitOffset=31 BitCount=1
 		};
 	} ENTRYFLAGSUNION;
@@ -120,7 +125,8 @@ typedef LDR_DATA_TABLE_ENTRY_COMPATIBLE LDR_DATA_TABLE_ENTRY;
 
 typedef LDR_DATA_TABLE_ENTRY *PCLDR_DATA_TABLE_ENTRY;
 
-typedef struct _PEB_LDR_DATA {
+typedef struct _PEB_LDR_DATA
+{
 	ULONG Length;
 	BOOLEAN Initialized;
 	HANDLE SsHandle;
@@ -132,21 +138,22 @@ typedef struct _PEB_LDR_DATA {
 	HANDLE ShutdownThreadId;
 } PEB_LDR_DATA, *PPEB_LDR_DATA;
 
-
-typedef struct _CURDIR {
+typedef struct _CURDIR
+{
 	UNICODE_STRING DosPath;
 	HANDLE Handle;
 } CURDIR, *PCURDIR;
 
-typedef struct _RTL_DRIVE_LETTER_CURDIR {
+typedef struct _RTL_DRIVE_LETTER_CURDIR
+{
 	USHORT Flags;
 	USHORT Length;
 	ULONG TimeStamp;
 	STRING DosPath;
 } RTL_DRIVE_LETTER_CURDIR, *PRTL_DRIVE_LETTER_CURDIR;
 
-
-typedef struct _RTL_USER_PROCESS_PARAMETERS {
+typedef struct _RTL_USER_PROCESS_PARAMETERS
+{
 	ULONG MaximumLength;
 	ULONG Length;
 
@@ -188,7 +195,8 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS {
 	// ULONG LoaderThreads;
 } RTL_USER_PROCESS_PARAMETERS, *PRTL_USER_PROCESS_PARAMETERS;
 
-typedef struct _PEB {
+typedef struct _PEB
+{
 	BOOLEAN InheritedAddressSpace;
 	BOOLEAN ReadImageFileExecOptions;
 	BOOLEAN BeingDebugged;
@@ -325,25 +333,29 @@ typedef struct _PEB {
 	ULONGLONG CsrServerReadOnlySharedMemoryBase;
 } PEB, *PPEB;
 
-typedef struct _GDI_TEB_BATCH {
-	ULONG	Offset;
-	UCHAR	Alignment[4];
+typedef struct _GDI_TEB_BATCH
+{
+	ULONG Offset;
+	UCHAR Alignment[4];
 	ULONG_PTR HDC;
-	ULONG	Buffer[GDI_BATCH_BUFFER_SIZE];
+	ULONG Buffer[GDI_BATCH_BUFFER_SIZE];
 } GDI_TEB_BATCH, *PGDI_TEB_BATCH;
 
-typedef struct _TEB_ACTIVE_FRAME_CONTEXT {
+typedef struct _TEB_ACTIVE_FRAME_CONTEXT
+{
 	ULONG Flags;
 	PSTR FrameName;
 } TEB_ACTIVE_FRAME_CONTEXT, *PTEB_ACTIVE_FRAME_CONTEXT;
 
-typedef struct _TEB_ACTIVE_FRAME {
+typedef struct _TEB_ACTIVE_FRAME
+{
 	ULONG Flags;
 	struct _TEB_ACTIVE_FRAME *Previous;
 	PTEB_ACTIVE_FRAME_CONTEXT Context;
 } TEB_ACTIVE_FRAME, *PTEB_ACTIVE_FRAME;
 
-typedef struct _TEB {
+typedef struct _TEB
+{
 	NT_TIB NtTib;
 
 	PVOID EnvironmentPointer;
@@ -486,78 +498,66 @@ typedef struct _TEB {
 } TEB, *PTEB;
 
 typedef VOID(NTAPI *PLDR_LOADED_MODULE_ENUMERATION_CALLBACK_FUNCTION)(
-	_In_    PCLDR_DATA_TABLE_ENTRY DataTableEntry,
-	_In_    PVOID Context,
-	_Inout_ BOOLEAN *StopEnumeration
-	);
+	_In_ PCLDR_DATA_TABLE_ENTRY DataTableEntry,
+	_In_ PVOID Context,
+	_Inout_ BOOLEAN *StopEnumeration);
 
 typedef PVOID NTAPI RTLINITUNICODESTRING(
-	_Inout_	PUNICODE_STRING DestinationString,
-	_In_opt_ PCWSTR SourceString
-	);
-typedef RTLINITUNICODESTRING FAR * LPRTLINITUNICODESTRING;
-LPRTLINITUNICODESTRING			RtlInitUnicodeString;
+	_Inout_ PUNICODE_STRING DestinationString,
+	_In_opt_ PCWSTR SourceString);
+typedef RTLINITUNICODESTRING FAR *LPRTLINITUNICODESTRING;
+LPRTLINITUNICODESTRING RtlInitUnicodeString;
 
 typedef NTSTATUS NTAPI RTLENTERCRITICALSECTION(
-	_In_ PRTL_CRITICAL_SECTION CriticalSection
-	);
-typedef RTLENTERCRITICALSECTION FAR * LPRTLENTERCRITICALSECTION;
-LPRTLENTERCRITICALSECTION			RtlEnterCriticalSection;
+	_In_ PRTL_CRITICAL_SECTION CriticalSection);
+typedef RTLENTERCRITICALSECTION FAR *LPRTLENTERCRITICALSECTION;
+LPRTLENTERCRITICALSECTION RtlEnterCriticalSection;
 
 typedef NTSTATUS NTAPI RTLLEAVECRITICALSECTION(
-	_In_ PRTL_CRITICAL_SECTION CriticalSection
-	);
-typedef RTLLEAVECRITICALSECTION FAR * LPRTLLEAVECRITICALSECTION;
-LPRTLLEAVECRITICALSECTION			RtlLeaveCriticalSection;
+	_In_ PRTL_CRITICAL_SECTION CriticalSection);
+typedef RTLLEAVECRITICALSECTION FAR *LPRTLLEAVECRITICALSECTION;
+LPRTLLEAVECRITICALSECTION RtlLeaveCriticalSection;
 
 typedef NTSTATUS NTAPI LDRENUMERATELOADEDMODULES(
 	_In_opt_ ULONG Flags,
 	_In_ PLDR_LOADED_MODULE_ENUMERATION_CALLBACK_FUNCTION CallbackFunction,
 	_In_opt_ PVOID Context);
-typedef LDRENUMERATELOADEDMODULES FAR * LPLDRENUMERATELOADEDMODULES;
-LPLDRENUMERATELOADEDMODULES			LdrEnumerateLoadedModules;
+typedef LDRENUMERATELOADEDMODULES FAR *LPLDRENUMERATELOADEDMODULES;
+LPLDRENUMERATELOADEDMODULES LdrEnumerateLoadedModules;
 
 typedef NTSTATUS NTAPI NTALLOCATEVIRTUALMEMORY(
-	_In_        HANDLE ProcessHandle,
-	_Inout_     PVOID *BaseAddress,
-	_In_        ULONG_PTR ZeroBits,
-	_Inout_     PSIZE_T RegionSize,
-	_In_        ULONG AllocationType,
-	_In_        ULONG Protect
-	);
-typedef NTALLOCATEVIRTUALMEMORY FAR * LPNTALLOCATEVIRTUALMEMORY;
-LPNTALLOCATEVIRTUALMEMORY	NtAllocateVirtualMemory;
+	_In_ HANDLE ProcessHandle,
+	_Inout_ PVOID *BaseAddress,
+	_In_ ULONG_PTR ZeroBits,
+	_Inout_ PSIZE_T RegionSize,
+	_In_ ULONG AllocationType,
+	_In_ ULONG Protect);
+typedef NTALLOCATEVIRTUALMEMORY FAR *LPNTALLOCATEVIRTUALMEMORY;
+LPNTALLOCATEVIRTUALMEMORY NtAllocateVirtualMemory;
 
+__inline struct _PEB *NtCurrentPeb() { return NtCurrentTeb()->ProcessEnvironmentBlock; }
 
-
-__inline struct _PEB * NtCurrentPeb() { return NtCurrentTeb()->ProcessEnvironmentBlock; }
-
-VOID PEBFake(PWSTR  pFullDllName, PWSTR pBaseDllName)
+VOID PEBFake(LPCWSTR pFullDllName, LPCWSTR pBaseDllName)
 {
 	NTSTATUS Status;
-	PPEB    Peb = NtCurrentPeb();
+	PPEB Peb = NtCurrentPeb();
 	WCHAR CurrentDir[MAX_PATH] = {0};
 
-	StrCpyW(CurrentDir,pFullDllName);
+	StrCpyW(CurrentDir, pFullDllName);
 
-	PathAppendW(CurrentDir,L"..");
-	wprintf(L"\nCurrentDir = %s\n", CurrentDir );
+	PathAppendW(CurrentDir, L"..");
+	wprintf(L"\nCurrentDir = %s\n", CurrentDir);
 
 	RtlEnterCriticalSection(Peb->FastPebLock);
 
-	// 进程对应路径
+	// find process imagepath
 	RtlInitUnicodeString(&Peb->ProcessParameters->ImagePathName, pFullDllName);
 	//wprintf(L"%s\n", Peb->ProcessParameters->ImagePathName.Buffer );
-	
-	// 进程命令行
 	RtlInitUnicodeString(&Peb->ProcessParameters->CommandLine, pFullDllName);
-
-	//当前路径
 	RtlInitUnicodeString(&Peb->ProcessParameters->CurrentDirectory.DosPath, CurrentDir);
 
-	
-	// 自己枚举LDR
-	LIST_ENTRY* ListHead, *Current;
+	// enum ldr
+	LIST_ENTRY *ListHead, *Current;
 	ListHead = &(Peb->Ldr->InLoadOrderModuleList);
 	Current = ListHead->Flink;
 	PCLDR_DATA_TABLE_ENTRY pstEntry;
@@ -565,11 +565,12 @@ VOID PEBFake(PWSTR  pFullDllName, PWSTR pBaseDllName)
 	{
 		pstEntry = CONTAINING_RECORD(Current, LDR_DATA_TABLE_ENTRY, InLoadOrderLinks);
 
-		//printf("find it %x %x \n", pstEntry->DllBase, Peb->ImageBaseAddress);
-		
+		// printf("find it %x %x \n", pstEntry->DllBase, Peb->ImageBaseAddress);
+
 		if (pstEntry->DllBase == Peb->ImageBaseAddress)
 		{
 			// 修改进程模块 映像路径 + 名称
+			// fix image path and name
 			RtlInitUnicodeString(&pstEntry->FullDllName, pFullDllName);
 			RtlInitUnicodeString(&pstEntry->BaseDllName, pBaseDllName);
 
@@ -579,10 +580,9 @@ VOID PEBFake(PWSTR  pFullDllName, PWSTR pBaseDllName)
 	}
 
 	RtlLeaveCriticalSection(Peb->FastPebLock);
-	
 }
 
-HRESULT AnsiToUnicode(LPCSTR pszA, LPOLESTR* ppszW)
+HRESULT AnsiToUnicode(LPCSTR pszA, LPOLESTR *ppszW)
 {
 	ULONG cCharacters;
 	DWORD dwError;
@@ -596,7 +596,7 @@ HRESULT AnsiToUnicode(LPCSTR pszA, LPOLESTR* ppszW)
 	if (NULL == *ppszW)
 		return E_OUTOFMEMORY;
 	if (0 == MultiByteToWideChar(CP_ACP, 0, pszA, cCharacters,
-		*ppszW, cCharacters))
+								 *ppszW, cCharacters))
 	{
 		dwError = GetLastError();
 		free(*ppszW);
@@ -609,7 +609,8 @@ HRESULT AnsiToUnicode(LPCSTR pszA, LPOLESTR* ppszW)
 bool init()
 {
 	bool bInit = false;
-	do {
+	do
+	{
 
 		HINSTANCE hinstStub = GetModuleHandleW(L"ntdll.dll");
 		if (hinstStub)
@@ -657,28 +658,29 @@ bool init()
 
 		bInit = true;
 
-	}while(0);
-	
+	} while (0);
+
 	return bInit;
 }
 
-int main(int ,char** )
+int main(int, char **)
 {
-	
+
 	if (init())
 	{
-		LPWSTR myPath = TEXT("C:\\Windows\\System32\\calc.exe");
-		LPWSTR myName = TEXT("calc.exe");
+		LPCWSTR myPath = _T(R"(C:\Windows\SysWOW64\calc.exe)");
+		LPCWSTR myName = _T("calc.exe");
 
-		printf("my PID = %d",GetCurrentProcessId());
+		printf("my PID = %d", GetCurrentProcessId());
 
-		PEBFake(myPath,myName);
+		PEBFake(myPath, myName);
 
-  // check
-		while(1)
+		// check
+		while (1)
 		{
 			Sleep(10000);
 		}
 	}
+
 	return 0;
 }
